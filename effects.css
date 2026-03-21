@@ -1,0 +1,100 @@
+/* TUYẾT RƠI MỜ ẢO */
+.dropDown {
+  position: fixed;
+  top: -12vh;
+  left: 0;
+  pointer-events: none;
+  transform: translate3d(0, 0, 0);
+  animation: snowFall linear forwards;
+  z-index: 1200;
+  will-change: transform, opacity;
+}
+
+.dropDown .snow-core {
+  display: block;
+  font-size: var(--size, 18px);
+  line-height: 1;
+  color: hsla(var(--hue, 205), 90%, 96%, 0.96);
+  text-shadow:
+    0 0 4px rgba(220, 243, 255, 0.9),
+    0 0 10px rgba(190, 231, 255, 0.8),
+    0 0 18px rgba(170, 223, 255, 0.56);
+  filter: blur(var(--blur, 0px)) saturate(1.05);
+  opacity: var(--alpha, 0.9);
+  animation:
+    snowSway var(--swayDur, 3.8s) ease-in-out infinite,
+    snowTwinkle var(--twinkleDur, 1.9s) ease-in-out infinite;
+}
+
+.dropDown .snow-core::after {
+  content: "";
+  position: absolute;
+  width: calc(var(--size, 18px) * 0.35);
+  height: calc(var(--size, 18px) * 0.35);
+  top: 18%;
+  left: 56%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0));
+  filter: blur(1px);
+  mix-blend-mode: screen;
+}
+
+.dropDown .snow-glow {
+  position: absolute;
+  inset: -14px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(210, 240, 255, 0.42), rgba(210, 240, 255, 0));
+  filter: blur(4px);
+  animation: snowGlowPulse 2.6s ease-in-out infinite;
+}
+
+@keyframes snowFall {
+  0% {
+    transform: translate3d(0, -12vh, 0) scale(0.7);
+    opacity: 0;
+  }
+  8% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate3d(var(--drift, 0px), 110vh, 0) scale(1);
+    opacity: 0;
+  }
+}
+
+@keyframes snowSway {
+  0%,
+  100% {
+    transform: translateX(0) rotate(0deg);
+  }
+  25% {
+    transform: translateX(-14px) rotate(-7deg);
+  }
+  75% {
+    transform: translateX(16px) rotate(7deg);
+  }
+}
+
+@keyframes snowTwinkle {
+  0%,
+  100% {
+    opacity: 0.72;
+    filter: blur(var(--blur, 0px)) saturate(1.02);
+  }
+  50% {
+    opacity: 1;
+    filter: blur(var(--blur, 0px)) saturate(1.12) brightness(1.18);
+  }
+}
+
+@keyframes snowGlowPulse {
+  0%,
+  100% {
+    opacity: 0.24;
+    transform: scale(0.92);
+  }
+  50% {
+    opacity: 0.52;
+    transform: scale(1.12);
+  }
+}

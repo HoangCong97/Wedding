@@ -1,0 +1,105 @@
+.calendar-section {
+  width: 100%;
+  max-width: 760px;
+  margin: 24px auto 26px;
+  padding: 18px 16px 20px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(255, 240, 245, 0.95));
+  border-radius: 18px;
+  box-shadow: 0 10px 30px rgba(194, 56, 124, 0.14);
+  box-sizing: border-box;
+}
+
+.calendar-section h2 {
+  margin: 0 0 12px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 32px;
+  letter-spacing: 1px;
+  color: #b43e78;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.calendar-cell {
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 14px;
+  color: #6d4a59;
+  background: rgba(255, 255, 255, 0.82);
+}
+
+.calendar-cell.day-name {
+  min-height: 38px;
+  background: rgba(255, 182, 193, 0.3);
+  color: #a14672;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+.calendar-cell.empty {
+  background: transparent;
+  box-shadow: none;
+}
+
+
+.calendar-cell.wedding-day {
+  position: relative;
+  color: #fff;
+  font-weight: 700;
+  background: none;
+  z-index: 1;
+  padding: 0;
+}
+
+.heart-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: 38px;
+  height: 35px;
+}
+
+.heart-svg {
+  display: block;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 38px;
+  height: 35px;
+  z-index: 0;
+}
+
+.heart-day {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 38px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  color: #fff;
+  z-index: 1;
+  pointer-events: none;
+  letter-spacing: 0.5px;
+  text-shadow: 0 2px 8px #e13e7b44;
+}
+
+.calendar-note {
+  margin: 14px 0 0;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 13px;
+  letter-spacing: 0.8px;
+  color: #8f4d6d;
+}

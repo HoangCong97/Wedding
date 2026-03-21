@@ -63,7 +63,7 @@ body {
 }
 
 .hero {
-  padding: 40px 20px;
+  padding: 30px 15px;
   background: linear-gradient(135deg, #ff9a9e, #fad0c4);
   color: white;
   margin: 0;
@@ -138,8 +138,6 @@ p {
   width: 100%;
   margin: 30px auto;
   padding: 10px;
-  background: rgba(255, 182, 193, 0.2);
-  border-radius: 15px;
   box-sizing: border-box;
   max-width: 1200px;
 }
@@ -170,6 +168,162 @@ p {
 
 .gallery img:hover {
   transform: scale(1.00);
+}
+
+.single-portrait {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+  align-items: stretch;
+  max-width: 1200px;
+  margin: 30px auto 18px;
+  padding: 4px 18px 14px;
+}
+
+.portrait-item {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.single-portrait.portrait-ready .portrait-item {
+  opacity: 0;
+  animation: none;
+}
+
+.single-portrait.portrait-ready .groom-item {
+  transform: translateX(-34vw) translateY(10px) scale(0.985);
+}
+
+.single-portrait.portrait-ready .bride-item {
+  transform: translateX(34vw) translateY(10px) scale(0.985);
+}
+
+.single-portrait.portrait-ready.portrait-inview .portrait-item {
+  animation: portraitReveal 2s cubic-bezier(0.2, 0.9, 0.2, 1) forwards;
+}
+
+.single-portrait.portrait-ready.portrait-inview .groom-item {
+  animation-delay: 0.4s;
+}
+
+.single-portrait.portrait-ready.portrait-inview .bride-item {
+  animation-delay: 0.75s;
+}
+
+.single-portrait .portrait-item img {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  display: block;
+  border-radius: 0;
+  border: 1px solid rgba(255, 255, 255, 0.74);
+  box-shadow:
+    0 18px 35px rgba(84, 34, 58, 0.16),
+    0 6px 16px rgba(84, 34, 58, 0.14),
+    inset 0 -24px 40px rgba(14, 8, 11, 0.09);
+  transition: transform 0.55s ease, box-shadow 0.55s ease, filter 0.55s ease;
+  filter: saturate(1.02) contrast(1.01);
+}
+
+.single-portrait .portrait-item:hover img {
+  transform: translateY(-4px);
+  box-shadow:
+    0 24px 42px rgba(84, 34, 58, 0.2),
+    0 10px 20px rgba(84, 34, 58, 0.16),
+    inset 0 -24px 40px rgba(14, 8, 11, 0.08);
+  filter: saturate(1.05) contrast(1.02);
+}
+
+/* .single-portrait img {
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.58);
+  box-shadow:
+    0 10px 26px rgba(0, 0, 0, 0.22),
+    0 2px 8px rgba(0, 0, 0, 0.14),
+    inset 0 -38px 54px rgba(0, 0, 0, 0.16),
+    inset 0 20px 30px rgba(255, 255, 255, 0.08);
+} */
+
+.groom-item img {
+  margin: 0;
+}
+
+.bride-item img {
+  margin: 0;
+}
+
+.portrait-note {
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  padding: 2px 0 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  width: 100%;
+}
+
+.groom-item .portrait-note {
+  margin: 0;
+}
+
+.bride-item .portrait-note {
+  margin: 0;
+}
+
+.portrait-note .role {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 11px;
+  letter-spacing: 2.4px;
+  font-weight: 600;
+  color: #a15d7f;
+}
+
+.portrait-note .name {
+  font-family: 'Great Vibes', cursive;
+  font-size: 42px;
+  line-height: 1.05;
+  color: #c2387c;
+  text-shadow: 0 8px 20px rgba(194, 56, 124, 0.2);
+  margin-top: 4px;
+}
+
+@keyframes portraitReveal {
+  from {
+    opacity: 0;
+    transform: translateX(var(--from-x, 0)) translateY(10px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) translateY(0) scale(1);
+  }
+}
+
+.single-portrait .groom-item {
+  --from-x: -46vw;
+}
+
+.single-portrait .bride-item {
+  --from-x: 46vw;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .portrait-item {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+
+  .single-portrait .portrait-item img {
+    transition: none;
+  }
+
+  .single-portrait .portrait-item:hover img {
+    transform: none;
+  }
 }
 
 input, textarea {
@@ -237,289 +391,9 @@ button:hover {
   transform: scale(0.95);
 }
 
-/* hoa rơi */
-.flower {
-  position: fixed;
-  top: -10px;
-  font-size: 20px;
-  animation: fall linear forwards;
-  pointer-events: none;
-}
+/* Effects moved to effects.css */
+/* Breakpoints moved to responsive.css */
 
-@keyframes fall {
-  to {
-    transform: translateY(100vh);
-  }
-}
-
-/* TABLET - 769px to 1024px */
-@media (min-width: 769px) and (max-width: 1024px) {
-  h1 { font-size: 32px; }
-  h2 { font-size: 20px; }
-  
-  .gallery img {
-  width: 100%;
-  height: 250px; /* hoặc 200px tùy thích */
-  object-fit: cover;
-}
-  
-  .family .info {
-    width: 350px;
-  }
-
-  .gallery-section .gallery {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 5px;
-  }
-}
-
-/* ULTRAWIDE 18:9 ASPECT RATIO */
-@media (min-aspect-ratio: 18/9) and (min-width: 1025px) {
-  .gallery-section .gallery {
-    grid-template-columns: repeat(5, 1fr);
-    gap: 8px;
-  }
-
-  .family {
-    flex-direction: row;
-    justify-content: center;
-    max-width: 1400px;
-    margin: 0 auto;
-  }
-
-  .family .info {
-    width: 30%;
-    min-width: 300px;
-  }
-
-  .gallery-section {
-    max-width: 1400px;
-    margin: 30px auto;
-  }
-}
-
-/* MOBILE - DƯỚI 768px */
-@media (max-width: 768px) {
-  #cover h1 {
-    font-size: 1.8rem;
-  }
-  
-  #cover p {
-    font-size: 1rem;
-  }
-  
-  .hero {
-    padding: 40px 15px;
-  }
-  
-  h1 { 
-    font-size: 24px; 
-  }
-  
-  h2 { 
-    font-size: 18px; 
-  }
-  
-  p { 
-    font-size: 14px; 
-  }
-
-  .family {
-    flex-direction: column;
-    align-items: center;
-    gap: 15px;
-  }
-
-  .family .info {
-    width: 90%;
-    padding: 15px;
-  }
-
-  .gallery {
-    margin: 0 auto;
-  }
-
-  .gallery img {
-    width: 100%;
-    height: 250px; /* hoặc 200px tùy thích */
-    object-fit: cover;
-  }
-
-  .gallery-section {
-    margin: 20px 0;
-    padding: 8px;
-  }
-
-  .gallery-section h3 {
-    font-size: 16px;
-  }
-
-  .gallery-section .gallery {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 6px;
-  }
-
-  input, textarea {
-    width: 90%;
-    max-width: 100%;
-    padding: 10px;
-    margin: 6px auto;
-    font-size: 14px;
-  }
-
-  button {
-    width: 90%;
-    padding: 12px;
-    font-size: 14px;
-  }
-
-  .comment {
-    width: 90%;
-    padding: 12px;
-    font-size: 14px;
-  }
-
-  .music-btn {
-    padding: 10px;
-    bottom: 15px;
-    right: 15px;
-    font-size: 18px;
-  }
-}
-
-/* MOBILE ULTRAWIDE 18:9 */
-@media (max-width: 768px) and (min-aspect-ratio: 18/9) {
-  .gallery-section .gallery {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 4px;
-  }
-
-  .family {
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 20px;
-  }
-
-  .family .info {
-    width: 45%;
-    min-width: 280px;
-  }
-}
-
-/* ĐIỆN THOẠI NHỎ - DƯỚI 480px */
-@media (max-width: 480px) {
-  #cover h1 {
-    font-size: 1.5rem;
-  }
-  
-  #cover p {
-    font-size: 0.9rem;
-  }
-  
-  .hero {
-    padding: 30px 10px;
-  }
-  
-  h1 { 
-    font-size: 20px; 
-    margin: 8px 0;
-  }
-  
-  h2 { 
-    font-size: 16px; 
-    margin: 10px 0;
-  }
-  
-  p { 
-    font-size: 13px; 
-    margin: 6px 0;
-  }
-
-  .info {
-    margin: 12px;
-    padding: 12px;
-  }
-
-  .family .info {
-    width: 95%;
-  }
-
-  .gallery img {
-    width: 100%;
-    height: 250px; /* hoặc 200px tùy thích */
-    object-fit: cover;
-  }
-
-  .gallery-section {
-    margin: 15px 0;
-    padding: 8px;
-  }
-
-  .gallery-section h3 {
-    font-size: 14px;
-    margin-bottom: 10px;
-  }
-
-  .gallery-section .gallery {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 4px;
-  }
-
-  input, textarea {
-    width: 95%;
-    padding: 10px;
-    margin: 5px auto;
-  }
-
-  button {
-    width: 95%;
-    padding: 10px;
-    font-size: 13px;
-  }
-
-  .comment {
-    width: 95%;
-    padding: 10px;
-    font-size: 13px;
-    margin: 8px auto;
-  }
-
-  .music-btn {
-    padding: 8px;
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    bottom: 10px;
-    right: 10px;
-    font-size: 16px;
-  }
-}
-
-/* ĐIỆN THOẠI NHỎ 18:9 ULTRAWIDE */
-@media (max-width: 480px) and (min-aspect-ratio: 18/9) {
-  .gallery-section .gallery {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 4px;
-  }
-
-  .hero {
-    padding: 20px 8px;
-  }
-
-  h1 {
-    font-size: 18px;
-  }
-
-  h2 {
-    font-size: 14px;
-  }
-
-  p {
-    font-size: 12px;
-  }
-}
 
 /* LIGHTBOX */
 #lightbox {
@@ -694,47 +568,186 @@ button:hover {
   }
 }
 
-@media (max-width: 768px) {
-  .first-image-overlay .main-text {
-    font-size: 42px;
-    letter-spacing: 3px;
-  }
-  
-  .first-image-overlay .couple-name {
-    font-size: 36px;
-  }
-  
-  .first-image-overlay .wedding-date {
-    font-size: 12px;
-    letter-spacing: 2px;
-  }
-  
-  .first-image-overlay {
-    padding: 26px 15px 20px;
-  }
+/* Gợi ý lời chúc nhỏ gọn, tinh tế */
+#suggested-wishes {
+  position: relative;
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 7px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  max-width: 100%;
+  padding: 2px 0 6px 0;
+  margin-bottom: 7px;
+  scrollbar-width: thin;
+  scrollbar-color: #ffd1e6 #fff0f5;
+  touch-action: pan-x;
+}
+#suggested-wishes::-webkit-scrollbar {
+  height: 5px;
+}
+#suggested-wishes::-webkit-scrollbar-thumb {
+  background: #ffd1e6;
+  border-radius: 8px;
+}
+.wish-suggestion {
+  background: #ffe6f3;
+  color: #b43e78;
+  border: none;
+  border-radius: 18px;
+  padding: 5px 14px;
+  font-size: 13px;
+  font-family: 'Montserrat', sans-serif;
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s, box-shadow 0.18s;
+  box-shadow: 0 1px 4px rgba(194, 56, 124, 0.06);
+  white-space: nowrap;
+  outline: none;
+}
+.wish-suggestion:hover, .wish-suggestion:focus {
+  background: #ffd1e6;
+  color: #a12d6b;
+  box-shadow: 0 2px 8px rgba(194, 56, 124, 0.13);
 }
 
-@media (max-width: 480px) {
-  .first-image-overlay .main-text {
-    font-size: 34px;
-    letter-spacing: 2px;
+#suggested-wishes.fade-left::before,
+#suggested-wishes.fade-right::after {
+  content: '';
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 22px;
+  pointer-events: none;
+  z-index: 2;
+}
+#suggested-wishes.fade-left::before {
+  left: 0;
+  background: linear-gradient(to right, #fff0f5 85%, transparent);
+  display: block;
+}
+#suggested-wishes.fade-right::after {
+  right: 0;
+  background: linear-gradient(to left, #fff0f5 85%, transparent);
+  display: block;
+}
+
+/* Nút gợi ý + dropdown tinh tế */
+.suggest-row {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  gap: 8px;
+  width: 80%;
+  max-width: 500px;
+  overflow: visible;
+  z-index: 20;
+}
+
+.suggest-row .suggest-btn-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 2px; /* Reduce gap between button and label */
+}
+
+.suggest-row .suggest-btn {
+  width: 38px;
+  min-width: 38px;
+  min-height: 38px;
+  margin: 8px 0;
+  padding: 0;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1;
+  background: linear-gradient(180deg, #ffd7ea, #ffc4df);
+  color: #a3376a;
+  box-shadow: 0 6px 16px rgba(163, 55, 106, 0.16);
+}
+
+.suggest-row .suggest-btn:hover {
+  background: linear-gradient(180deg, #ffd0e6, #ffb9d8);
+  color: #8f2d5b;
+}
+
+.suggest-row .suggest-label {
+  font-size: 12px;
+  color: #a3376a;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 500;
+  text-align: center;
+}
+
+.suggest-dropdown {
+  position: absolute;
+  top: auto;
+  bottom: calc(100% + 8px);
+  right: 0;
+  width: min(330px, 100%);
+  max-height: 230px;
+  overflow-y: auto;
+  padding: 8px;
+  border-radius: 14px;
+  border: 1px solid #ffd3e7;
+  background: rgba(255, 246, 251, 0.97);
+  box-shadow: 0 18px 35px rgba(87, 20, 52, 0.16);
+  backdrop-filter: blur(8px);
+  display: none;
+  z-index: 1400;
+  transform-origin: bottom right;
+}
+
+.suggest-dropdown.open {
+  display: grid;
+  gap: 6px;
+}
+
+.suggest-dropdown-item {
+  width: 100%;
+  text-align: left;
+  border: 0;
+  margin: 0;
+  padding: 9px 11px;
+  border-radius: 10px;
+  background: #fff;
+  color: #94325f;
+  font-size: 13px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.18s ease, transform 0.18s ease, color 0.18s ease;
+}
+
+.suggest-dropdown-item:hover,
+.suggest-dropdown-item:focus {
+  background: #ffe8f3;
+  color: #7f2850;
+  transform: translateY(-1px);
+}
+
+@media (max-width: 768px) {
+  .suggest-row {
+    width: 95%;
+    max-width: 100%;
   }
-  
-  .first-image-overlay .couple-name {
-    font-size: 30px;
+
+  .suggest-row .suggest-btn {
+    width: 36px;
+    min-width: 36px;
+    height: 36px;
+    margin-top: 8px;
   }
-  
-  .first-image-overlay .wedding-date {
-    font-size: 11px;
-    letter-spacing: 1.5px;
-  }
-  
-  .first-image-overlay {
-    padding: 22px 12px 16px;
+
+  .suggest-dropdown {
+    width: min(300px, 100%);
+    right: 0;
   }
 }
 
 </style>
+<link rel="stylesheet" href="effects.css">
+<link rel="stylesheet" href="responsive.css">
+<link rel="stylesheet" href="calendar.css">
 </head>
 
 <body>
@@ -769,13 +782,36 @@ button:hover {
   </div>
 </div>
 <div class="hero">
-  <h1>💖 Trọng Quang & Thu Hương 💖</h1>
+  <h1>THIỆP MỜI THAM DỰ LỄ CƯỚI</h1>
   <p>28/03/2026</p>
   <p>Đón khách: 16:00 | Khai tiệc: 17:00</p>
   <h2 id="countdown"></h2>
 </div>
 
-<div class="family">
+
+<div class="gallery single-portrait">
+  <div class="portrait-item groom-item">
+    <div class="portrait-note">
+      <span class="role">CHÚ RỂ</span>
+      <span class="name">Trọng Quang</span>
+    </div>
+    <img src="images/single_male.jpg" alt="Chú rể Trọng Quang">
+  </div>
+  <div class="portrait-item bride-item">
+    <img src="images/single_female.jpg" alt="Cô dâu Thu Hương">
+    <div class="portrait-note">
+      <span class="role">CÔ DÂU</span>
+      <span class="name">Thu Hương</span>
+    </div>
+  </div>
+  <div class="text-block" style="grid-column: 1 / -1; margin-top: 12px; font-size: 20px; color: #a15d7f;">
+    <p>Chúng tôi gặp nhau như một sự tình cờ, nhưng lại ở bên nhau như một điều đã được định sẵn</p>
+    <p>Và giờ đây, chúng tôi quyết định cùng nhau viết tiếp câu chuyện ấy bằng một đám cưới trọn vẹn yêu thương</p>
+  </div>
+</div>
+
+
+<!-- <div class="family">
   <div class="info">
     <h2>👨‍👩‍👦 Nhà Trai</h2>
     <p><b>Chú rể:</b> Chu Trọng Quang</p>
@@ -789,12 +825,21 @@ button:hover {
     <p><b>Bố mẹ:</b> Chu Thúc Long - Chu Thị Hà</p>
     <p>📍 Số 04, TDP Kẻ, P. Vân Hà, Bắc Ninh</p>
   </div>
+</div> -->
+
+<div class="hero">
+  <h1>Lễ thành hôn</h1>
 </div>
 
-<h2>📸 Khoảnh khắc</h2>
+<div id="calendar-container"></div>
+
+
+<div class="hero">
+  <h1>Khoảnh khắc</h1>
+</div>
+
 
 <div class="gallery-section">
-  <h3>💑 Ảnh cương lên</h3>
   <div class="gallery">
     <img src="images/combo_2_couple_1.jpg">
     <img src="images/combo_2_couple_2.jpg">
@@ -803,24 +848,22 @@ button:hover {
   </div>
 </div>
 
+<div class="hero">
+  <h1>Ảnh áo đỏ</h1>
+</div>
+
 <div class="gallery-section">
-  <h3>❤️ Ảnh áo đỏ</h3>
   <div class="gallery">
     <img src="images/red_couple_1.jpg">
     <img src="images/red_couple_2.jpg">
   </div>
 </div>
 
-<div class="gallery-section">
-  <h3>🤳 Ảnh đơn</h3>
-  <div class="gallery">
-    <img src="images/single_male.jpg">
-    <img src="images/single_female.jpg">
-  </div>
+<div class="hero">
+  <h1>Ảnh đôi chính</h1>
 </div>
 
 <div class="gallery-section">
-  <h3>📷 Ảnh đôi chính</h3>
   <div class="gallery">
     <img src="images/couple_1.jpg">
     <img src="images/couple_2.jpg">
@@ -829,8 +872,11 @@ button:hover {
   </div>
 </div>
 
+<div class="hero">
+  <h1>Khoảnh khắc khác</h1>
+</div>
+
 <div class="gallery-section">
-  <h3>✨ Khoảnh khắc khác</h3>
   <div class="gallery">
     <img src="images/photo_5.jpg">
     <img src="images/photo_6.jpg">
@@ -843,9 +889,37 @@ button:hover {
 </div>
 
 <h2>💌 Gửi lời chúc</h2>
+
 <div style="display: flex; flex-direction: column; align-items: center; padding: 20px; box-sizing: border-box; width: 100%;">
   <input id="name" placeholder="Tên của bạn" style="display: block;">
-  <textarea id="msg" placeholder="Lời chúc..." style="display: block;"></textarea><br>
+  <div class="suggest-row">
+    <textarea id="msg" placeholder="Lời chúc..."></textarea>
+    <div class="suggest-btn-wrapper">
+      <button type="button" id="open-wish-dropdown" class="suggest-btn" title="Gợi ý lời chúc">💡</button>
+      <span class="suggest-label">Gợi ý</span>
+    </div>
+    <div id="wish-dropdown-list" class="suggest-dropdown">
+      <button class="suggest-dropdown-item" data-msg="Chúc hai bạn luôn yêu thương, thấu hiểu và đồng hành cùng nhau đến trọn đời.">
+        Chúc hai bạn luôn yêu thương, thấu hiểu và đồng hành cùng nhau đến trọn đời.
+      </button>
+
+      <button class="suggest-dropdown-item" data-msg="Chúc tình yêu của hai bạn luôn ngọt ngào, dù thời gian trôi qua vẫn không phai nhạt.">
+        Chúc tình yêu của hai bạn luôn ngọt ngào, dù thời gian trôi qua vẫn không phai nhạt.
+      </button>
+
+      <button class="suggest-dropdown-item" data-msg="Chúc hai bạn luôn nắm tay nhau qua mọi thử thách, cùng nhau xây dựng một mái ấm hạnh phúc.">
+        Chúc hai bạn luôn nắm tay nhau qua mọi thử thách, cùng nhau xây dựng một mái ấm hạnh phúc.
+      </button>
+
+      <button class="suggest-dropdown-item" data-msg="Chúc cuộc hai bạn luôn hạnh phúc và tràn đầy những khoảnh khắc đáng nhớ.">
+        Chúc cuộc hai bạn luôn hạnh phúc và tràn đầy những khoảnh khắc đáng nhớ.
+      </button>
+
+      <button class="suggest-dropdown-item" data-msg="Chúc hai bạn mãi là điểm tựa của nhau, cùng nhau viết nên câu chuyện tình yêu thật đẹp và bền lâu.">
+        Chúc hai bạn mãi là điểm tựa của nhau, cùng nhau viết nên câu chuyện tình yêu thật đẹp và bền lâu.
+      </button>
+    </div>
+  </div>
   <button onclick="send()">Gửi</button>
 </div>
 
@@ -854,261 +928,50 @@ button:hover {
 <!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
-
+<script src="app.js"></script>
+<script src="calendar.js"></script>
 <script>
-const firebaseConfig = {
-  apiKey: "AIzaSyBLbZ9sruFN_bCuv-MMBTvil1x5gCuG-2w",
-  authDomain: "wedding-8f40a.firebaseapp.com",
-  projectId: "wedding-8f40a"
-};
+// Dropdown gợi ý lời chúc tinh tế
+document.addEventListener('DOMContentLoaded', function() {
+  var btn = document.getElementById('open-wish-dropdown');
+  var list = document.getElementById('wish-dropdown-list');
+  var textarea = document.getElementById('msg');
+  if (btn && list) {
+    btn.setAttribute('aria-expanded', 'false');
 
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
-
-// gửi comment
-function send() {
-  const name = document.getElementById("name").value.trim();
-  const msg = document.getElementById("msg").value.trim();
-
-  if (!name || !msg) {
-    alert("Nhập đầy đủ nha!");
-    return;
-  }
-
-  db.collection("comments").add({
-    name,
-    msg,
-    time: Date.now()
-  });
-
-  document.getElementById("name").value = "";
-  document.getElementById("msg").value = "";
-}
-
-// realtime
-db.collection("comments")
-.orderBy("time", "desc")
-.onSnapshot(snapshot => {
-  let html = "";
-  snapshot.forEach(doc => {
-    const d = doc.data();
-    const date = new Date(d.time || Date.now());
-
-    html += `
-      <div class="comment">
-        <b>${d.name}</b> <small>${date.toLocaleString()}</small><br>
-        ${d.msg}
-      </div>
-    `;
-  });
-  document.getElementById("comments").innerHTML = html;
-});
-
-// MỞ THIỆP + NHẠC
-function openCard() {
-  const cover = document.getElementById("cover");
-  // Thêm class opening để trigger animation phóng to
-  cover.classList.add("opening");
-  // Chờ animation hoàn thành (800ms) rồi ẩn thiệp
-  setTimeout(() => {
-    cover.classList.add("hide");
-    startIntroAutoScroll();
-  }, 800);
-  // Play nhạc
-  // document.getElementById("music").play();
-}
-
-let introSequenceStarted = false;
-
-function startIntroAutoScroll() {
-  if (introSequenceStarted) return;
-  introSequenceStarted = true;
-
-  const firstSection = document.querySelector(".first-image-section");
-  const overlay = document.querySelector(".first-image-overlay");
-  if (!firstSection || !overlay) return;
-
-  const lastLine = overlay.querySelector(".wedding-date");
-  if (!lastLine) {
-    scrollToOverlayTop();
-    return;
-  }
-
-  lastLine.addEventListener("animationend", () => {
-    scrollToOverlayTop();
-  }, { once: true });
-
-  firstSection.classList.add("intro-animate");
-}
-
-function scrollToOverlayTop() {
-  const firstSection = document.querySelector(".first-image-section");
-  const overlay = document.querySelector(".first-image-overlay");
-  if (!firstSection || !overlay) return;
-
-  const targetTop = Math.max(0, firstSection.offsetTop + firstSection.offsetHeight - overlay.offsetHeight);
-  const startTop = window.pageYOffset;
-  const distance = targetTop - startTop;
-  const duration = 2800;
-  const startTime = performance.now();
-
-  function easeInOutCubic(t) {
-    return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-  }
-
-  function animateScroll(now) {
-    const elapsed = now - startTime;
-    const progress = Math.min(elapsed / duration, 1);
-    const eased = easeInOutCubic(progress);
-    window.scrollTo(0, startTop + distance * eased);
-
-    if (progress < 1) {
-      requestAnimationFrame(animateScroll);
+    function setOpenState(isOpen) {
+      list.classList.toggle('open', isOpen);
+      btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
     }
-  }
 
-  requestAnimationFrame(animateScroll);
-}
+    btn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      setOpenState(!list.classList.contains('open'));
+    });
 
-// bật/tắt nhạc
-// function toggleMusic() {
-//   const m = document.getElementById("music");
-//   if (m.paused) m.play();
-//   else m.pause();
-// }
+    list.querySelectorAll('.suggest-dropdown-item').forEach(function(item) {
+      item.addEventListener('click', function() {
+        textarea.value = item.getAttribute('data-msg');
+        textarea.focus();
+        setOpenState(false);
+      });
+    });
 
-// countdown
-const target = new Date("2026-03-28T17:00:00");
+    document.addEventListener('click', function(e) {
+      if (!list.contains(e.target) && !btn.contains(e.target)) {
+        setOpenState(false);
+      }
+    });
 
-setInterval(() => {
-  const el = document.getElementById("countdown");
-  const now = new Date();
-  const diff = target - now;
-
-  if (diff <= 0) {
-    el.innerText = "🎉 Đã đến ngày cưới!";
-    return;
-  }
-
-  const d = Math.floor(diff / (1000*60*60*24));
-  const h = Math.floor((diff / (1000*60*60)) % 24);
-  const m = Math.floor((diff / (1000*60)) % 60);
-  const s = Math.floor(diff / 1000) % 60;
-
-  el.innerText = `⏳ ${d} ngày ${h} giờ ${m} phút ${s} giây`;
-}, 1000);
-
-// hoa rơi
-setInterval(() => {
-  const f = document.createElement("div");
-  f.className = "flower";
-  f.innerText = "❆";
-  f.style.left = Math.random()*100 + "vw";
-  const duration = 3 + Math.random()*5; // 3-8 giây
-  f.style.animationDuration = duration + "s";
-
-  document.body.appendChild(f);
-  // Remove sau khi animation kết thúc cộng buffer
-  setTimeout(() => f.remove(), (duration + 1) * 1000);
-}, 300);
-
-// LIGHTBOX
-const lightbox = document.getElementById("lightbox");
-const lightboxImg = document.getElementById("lightboxImg");
-let touchStartX = 0;
-let touchEndX = 0;
-
-// Click ảnh để mở/đóng lightbox
-document.querySelectorAll(".gallery img").forEach(img => {
-  img.addEventListener("click", function(e) {
-    e.stopPropagation();
-    if (lightbox.classList.contains("active")) {
-      closeLightbox();
-    } else {
-      lightboxImg.src = this.src;
-      lightbox.classList.add("active");
-      document.body.style.overflow = "hidden";
-    }
-  });
-});
-
-// Click ảnh đầu tiên để mở lightbox
-const firstImage = document.querySelector(".first-image-section img");
-if (firstImage) {
-  firstImage.addEventListener("click", function(e) {
-    e.stopPropagation();
-    if (lightbox.classList.contains("active")) {
-      closeLightbox();
-    } else {
-      lightboxImg.src = this.src;
-      lightbox.classList.add("active");
-      document.body.style.overflow = "hidden";
-    }
-  });
-}
-
-// Đóng lightbox khi click nền
-lightbox.addEventListener("click", function(e) {
-  if (e.target === lightbox) {
-    closeLightbox();
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        setOpenState(false);
+      }
+    });
   }
 });
-
-// Vuốt để đóng
-lightboxImg.addEventListener("touchstart", function(e) {
-  touchStartX = e.changedTouches[0].screenX;
-});
-
-lightboxImg.addEventListener("touchend", function(e) {
-  touchEndX = e.changedTouches[0].screenX;
-  handleSwipe();
-});
-
-// Vuốt chuột để đóng (desktop)
-let mouseStartX = 0;
-lightboxImg.addEventListener("mousedown", function(e) {
-  mouseStartX = e.clientX;
-});
-
-lightboxImg.addEventListener("mouseup", function(e) {
-  const mouseEndX = e.clientX;
-  const diff = Math.abs(mouseEndX - mouseStartX);
-  if (diff > 50) {
-    closeLightbox();
-  }
-});
-
-// Click vào ảnh lightbox để đóng
-lightboxImg.addEventListener("click", function(e) {
-  e.stopPropagation();
-  closeLightbox();
-});
-
-// Cuộn chuột để đóng
-lightbox.addEventListener("wheel", function(e) {
-  if (lightbox.classList.contains("active")) {
-    e.preventDefault();
-    closeLightbox();
-  }
-}, { passive: false });
-
-function handleSwipe() {
-  const diff = Math.abs(touchEndX - touchStartX);
-  if (diff > 50) {
-    closeLightbox();
-  }
-}
-
-function closeLightbox() {
-  lightbox.classList.add("closing");
-  document.body.style.overflow = "auto";
-  setTimeout(() => {
-    lightbox.classList.remove("active");
-    lightbox.classList.remove("closing");
-  }, 300);
-}
-
 </script>
 
 </body>
 </html>
+
