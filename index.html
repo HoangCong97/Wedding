@@ -6,6 +6,8 @@
 <title>Thiệp cưới Quang & Hương 💖</title>
 
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Great+Vibes&family=Montserrat:wght@500;600&display=swap');
+
 body {
   margin: 0;
   font-family: 'Arial', sans-serif;
@@ -165,8 +167,9 @@ p {
   object-fit: cover;
 }
 
+
 .gallery img:hover {
-  transform: scale(1.05);
+  transform: scale(1.00);
 }
 
 input, textarea {
@@ -517,10 +520,229 @@ button:hover {
     font-size: 12px;
   }
 }
+
+/* LIGHTBOX */
+#lightbox {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(4px);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+#lightbox.active {
+  display: flex;
+  opacity: 1;
+}
+
+#lightbox img {
+  max-width: 90%;
+  max-height: 90%;
+  object-fit: contain;
+  border-radius: 10px;
+  touch-action: manipulation;
+  cursor: grab;
+  animation: zoomIn 0.3s ease;
+}
+
+#lightbox img:active {
+  cursor: grabbing;
+}
+
+#lightbox.closing img {
+  animation: zoomOut 0.3s ease;
+}
+
+@keyframes zoomIn {
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes zoomOut {
+  from {
+    transform: scale(1);
+    opacity: 1;
+  }
+  to {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+}
+
+/* FIRST IMAGE */
+.first-image-section {
+  width: 100%;
+  padding: 0;
+  background: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+}
+
+.first-image-section img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 0;
+  box-shadow: none;
+  cursor: pointer;
+}
+
+.first-image-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(to top, rgba(20, 12, 16, 0.72), rgba(20, 12, 16, 0.1));
+  color: #fff;
+  padding: 34px 20px 28px;
+  text-align: center;
+  backdrop-filter: blur(1px);
+}
+
+.first-image-overlay::before {
+  content: "";
+  display: block;
+  width: 70px;
+  height: 1px;
+  margin: 0 auto 12px;
+  background: rgba(255, 255, 255, 0.55);
+  opacity: 0;
+  transform: translateY(18px);
+}
+
+.first-image-overlay .main-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 56px;
+  font-weight: 700;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  margin: 0;
+  line-height: 1.05;
+  text-shadow: 0 4px 18px rgba(0, 0, 0, 0.45);
+  opacity: 0;
+  transform: translateY(24px);
+}
+
+.first-image-overlay .couple-name {
+  font-family: 'Great Vibes', cursive;
+  font-size: 46px;
+  margin: 12px 0 6px;
+  font-weight: 400;
+  letter-spacing: 1px;
+  text-shadow: 0 4px 16px rgba(0, 0, 0, 0.45);
+  opacity: 0;
+  transform: translateY(24px);
+}
+
+.first-image-overlay .wedding-date {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 14px;
+  letter-spacing: 3px;
+  margin: 4px 0 0;
+  font-weight: 600;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.first-image-section.intro-animate .first-image-overlay::before {
+  animation: fadeUp 1.2s ease-out forwards;
+  animation-delay: 0.2s;
+}
+
+.first-image-section.intro-animate .first-image-overlay .main-text {
+  animation: fadeUp 1.4s ease-out forwards;
+  animation-delay: 0.35s;
+}
+
+.first-image-section.intro-animate .first-image-overlay .couple-name {
+  animation: fadeUp 1.5s ease-out forwards;
+  animation-delay: 0.65s;
+}
+
+.first-image-section.intro-animate .first-image-overlay .wedding-date {
+  animation: fadeUp 1.6s ease-out forwards;
+  animation-delay: 0.95s;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(48px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .first-image-overlay .main-text {
+    font-size: 42px;
+    letter-spacing: 3px;
+  }
+  
+  .first-image-overlay .couple-name {
+    font-size: 36px;
+  }
+  
+  .first-image-overlay .wedding-date {
+    font-size: 12px;
+    letter-spacing: 2px;
+  }
+  
+  .first-image-overlay {
+    padding: 26px 15px 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .first-image-overlay .main-text {
+    font-size: 34px;
+    letter-spacing: 2px;
+  }
+  
+  .first-image-overlay .couple-name {
+    font-size: 30px;
+  }
+  
+  .first-image-overlay .wedding-date {
+    font-size: 11px;
+    letter-spacing: 1.5px;
+  }
+  
+  .first-image-overlay {
+    padding: 22px 12px 16px;
+  }
+}
+
 </style>
 </head>
 
 <body>
+
+<!-- LIGHTBOX -->
+<div id="lightbox">
+  <img id="lightboxImg" src="" alt="Ảnh phóng to">
+</div>
 
 <!-- COVER -->
 <div id="cover" onclick="openCard()">
@@ -530,12 +752,22 @@ button:hover {
 </div>
 
 <!-- NHẠC -->
-<audio id="music" loop>
+<!-- <audio id="music" loop>
   <source src="music.mp3">
 </audio>
 
-<div class="music-btn" onclick="toggleMusic()">🎵</div>
+<div class="music-btn" onclick="toggleMusic()">🎵</div> -->
 
+<!-- FIRST IMAGE -->
+<div class="first-image-section">
+  <img src="images/first_image.jpg" alt="Ảnh đầu tiên" onclick="openLightboxFromFirstImage(event)">
+
+  <div class="first-image-overlay">
+    <p class="main-text">WE GET<br>MARRIED</p>
+    <p class="couple-name">Trọng Quang & Thu Hương</p>
+    <p class="wedding-date">28.3.2026</p>
+  </div>
+</div>
 <div class="hero">
   <h1>💖 Trọng Quang & Thu Hương 💖</h1>
   <p>28/03/2026</p>
@@ -680,17 +912,70 @@ function openCard() {
   // Chờ animation hoàn thành (800ms) rồi ẩn thiệp
   setTimeout(() => {
     cover.classList.add("hide");
+    startIntroAutoScroll();
   }, 800);
   // Play nhạc
-  document.getElementById("music").play();
+  // document.getElementById("music").play();
+}
+
+let introSequenceStarted = false;
+
+function startIntroAutoScroll() {
+  if (introSequenceStarted) return;
+  introSequenceStarted = true;
+
+  const firstSection = document.querySelector(".first-image-section");
+  const overlay = document.querySelector(".first-image-overlay");
+  if (!firstSection || !overlay) return;
+
+  const lastLine = overlay.querySelector(".wedding-date");
+  if (!lastLine) {
+    scrollToOverlayTop();
+    return;
+  }
+
+  lastLine.addEventListener("animationend", () => {
+    scrollToOverlayTop();
+  }, { once: true });
+
+  firstSection.classList.add("intro-animate");
+}
+
+function scrollToOverlayTop() {
+  const firstSection = document.querySelector(".first-image-section");
+  const overlay = document.querySelector(".first-image-overlay");
+  if (!firstSection || !overlay) return;
+
+  const targetTop = Math.max(0, firstSection.offsetTop + firstSection.offsetHeight - overlay.offsetHeight);
+  const startTop = window.pageYOffset;
+  const distance = targetTop - startTop;
+  const duration = 2800;
+  const startTime = performance.now();
+
+  function easeInOutCubic(t) {
+    return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  }
+
+  function animateScroll(now) {
+    const elapsed = now - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+    const eased = easeInOutCubic(progress);
+    window.scrollTo(0, startTop + distance * eased);
+
+    if (progress < 1) {
+      requestAnimationFrame(animateScroll);
+    }
+  }
+
+  requestAnimationFrame(animateScroll);
 }
 
 // bật/tắt nhạc
-function toggleMusic() {
-  const m = document.getElementById("music");
-  if (m.paused) m.play();
-  else m.pause();
-}
+// function toggleMusic() {
+//   const m = document.getElementById("music");
+//   if (m.paused) m.play();
+//   else m.pause();
+// }
 
 // countdown
 const target = new Date("2026-03-28T17:00:00");
@@ -717,7 +1002,7 @@ setInterval(() => {
 setInterval(() => {
   const f = document.createElement("div");
   f.className = "flower";
-  f.innerText = "🌸";
+  f.innerText = "❆";
   f.style.left = Math.random()*100 + "vw";
   const duration = 3 + Math.random()*5; // 3-8 giây
   f.style.animationDuration = duration + "s";
@@ -726,6 +1011,103 @@ setInterval(() => {
   // Remove sau khi animation kết thúc cộng buffer
   setTimeout(() => f.remove(), (duration + 1) * 1000);
 }, 300);
+
+// LIGHTBOX
+const lightbox = document.getElementById("lightbox");
+const lightboxImg = document.getElementById("lightboxImg");
+let touchStartX = 0;
+let touchEndX = 0;
+
+// Click ảnh để mở/đóng lightbox
+document.querySelectorAll(".gallery img").forEach(img => {
+  img.addEventListener("click", function(e) {
+    e.stopPropagation();
+    if (lightbox.classList.contains("active")) {
+      closeLightbox();
+    } else {
+      lightboxImg.src = this.src;
+      lightbox.classList.add("active");
+      document.body.style.overflow = "hidden";
+    }
+  });
+});
+
+// Click ảnh đầu tiên để mở lightbox
+const firstImage = document.querySelector(".first-image-section img");
+if (firstImage) {
+  firstImage.addEventListener("click", function(e) {
+    e.stopPropagation();
+    if (lightbox.classList.contains("active")) {
+      closeLightbox();
+    } else {
+      lightboxImg.src = this.src;
+      lightbox.classList.add("active");
+      document.body.style.overflow = "hidden";
+    }
+  });
+}
+
+// Đóng lightbox khi click nền
+lightbox.addEventListener("click", function(e) {
+  if (e.target === lightbox) {
+    closeLightbox();
+  }
+});
+
+// Vuốt để đóng
+lightboxImg.addEventListener("touchstart", function(e) {
+  touchStartX = e.changedTouches[0].screenX;
+});
+
+lightboxImg.addEventListener("touchend", function(e) {
+  touchEndX = e.changedTouches[0].screenX;
+  handleSwipe();
+});
+
+// Vuốt chuột để đóng (desktop)
+let mouseStartX = 0;
+lightboxImg.addEventListener("mousedown", function(e) {
+  mouseStartX = e.clientX;
+});
+
+lightboxImg.addEventListener("mouseup", function(e) {
+  const mouseEndX = e.clientX;
+  const diff = Math.abs(mouseEndX - mouseStartX);
+  if (diff > 50) {
+    closeLightbox();
+  }
+});
+
+// Click vào ảnh lightbox để đóng
+lightboxImg.addEventListener("click", function(e) {
+  e.stopPropagation();
+  closeLightbox();
+});
+
+// Cuộn chuột để đóng
+lightbox.addEventListener("wheel", function(e) {
+  if (lightbox.classList.contains("active")) {
+    e.preventDefault();
+    closeLightbox();
+  }
+}, { passive: false });
+
+function handleSwipe() {
+  const diff = Math.abs(touchEndX - touchStartX);
+  if (diff > 50) {
+    closeLightbox();
+  }
+}
+
+function closeLightbox() {
+  lightbox.classList.add("closing");
+  document.body.style.overflow = "auto";
+  setTimeout(() => {
+    lightbox.classList.remove("active");
+    lightbox.classList.remove("closing");
+  }, 300);
+}
+
 </script>
 
 </body>
