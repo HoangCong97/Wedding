@@ -6,6 +6,7 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
+let lastCommentsSnapshot = null;
 
 // gửi comment
 function send() {
@@ -27,10 +28,64 @@ function send() {
   document.getElementById("msg").value = "";
 }
 
+// gửi RSVP (xác nhận tham gia)
+function submitRSVP(formData) {
+  // allow passing an object, or read from modal/inline inputs
+  let name = '';
+  let phone = '';
+  let relation = '';
+  if (formData && typeof formData === 'object') {
+    name = (formData.name || '').trim();
+    phone = (formData.phone || '').trim();
+    relation = (formData.relation || '').trim();
+  } else {
+    const elName = document.getElementById('rsvp-name') || document.getElementById('name');
+    const elPhone = document.getElementById('rsvp-phone');
+    const elRelation = document.getElementById('rsvp-relation');
+    name = elName ? elName.value.trim() : '';
+    phone = elPhone ? elPhone.value.trim() : '';
+    relation = elRelation ? elRelation.value.trim() : '';
+  }
+
+  if (!name) {
+    alert('Vui lòng nhập họ tên để xác nhận.');
+    return Promise.reject(new Error('missing name'));
+  }
+
+  const payload = { name, phone, relation, time: Date.now() };
+
+  // Lưu vào joins trực tiếp, độc lập
+  return db.collection('joins').add({
+    name: payload.name,
+    phoneNumber: payload.phone,
+    Role: payload.relation
+  }).then(() => {
+    // UI feedback
+    const modalBackdrop = document.getElementById('rsvp-backdrop');
+    if (modalBackdrop) {
+      modalBackdrop.style.display = 'none';
+      modalBackdrop.setAttribute('aria-hidden', 'true');
+      const form = document.getElementById('rsvp-form'); if (form) form.reset();
+    }
+    const msg = document.getElementById('rsvp-msg');
+    if (msg) {
+      msg.style.display = 'block';
+      msg.textContent = 'Cảm ơn! Xác nhận của bạn đã được lưu.';
+      setTimeout(() => { msg.style.display = 'none'; }, 4000);
+    }
+    alert('Cảm ơn! Xác nhận của bạn đã được lưu.');
+  }).catch(err => {
+    console.error('joins save error', err);
+    alert('Lưu xác nhận thất bại. Vui lòng thử lại sau.');
+    throw err;
+  });
+}
+
 // realtime
 db.collection("comments")
 .orderBy("time", "desc")
 .onSnapshot(snapshot => {
+  lastCommentsSnapshot = snapshot;
   let html = "";
   let count = 0;
   snapshot.forEach(doc => {
@@ -50,11 +105,68 @@ db.collection("comments")
   const btn = document.getElementById("showAllCommentsBtn");
   if (btn) {
     btn.addEventListener("click", function() {
-      // Chuyển sang màn hình lời chúc
-      window.location.href = "comments.html";
+      showAllCommentsModal(lastCommentsSnapshot);
     });
   }
 });
+
+function escapeHtml(str) {
+  if (!str) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
+function showAllCommentsModal(snapshot) {
+  if (!snapshot) return;
+  // remove existing
+  var existing = document.getElementById('comments-backdrop-full');
+  if (existing) existing.remove();
+
+  var backdrop = document.createElement('div');
+  backdrop.id = 'comments-backdrop-full';
+  backdrop.className = 'comments-backdrop open';
+
+  var modal = document.createElement('div');
+  modal.className = 'comments-modal';
+  modal.setAttribute('role', 'dialog');
+  modal.setAttribute('aria-modal', 'true');
+  modal.innerHTML = '<button class="comments-close" aria-label="Đóng">×</button><h3>Lời chúc</h3><div class="comments-list"></div>';
+
+  backdrop.appendChild(modal);
+  document.body.appendChild(backdrop);
+
+  var list = modal.querySelector('.comments-list');
+  snapshot.forEach(function(doc) {
+    var d = doc.data();
+    var date = new Date(d.time || Date.now());
+    var item = document.createElement('div');
+    item.className = 'comment-item';
+    var header = document.createElement('div');
+    header.className = 'comment-header';
+    var nameSpan = document.createElement('span');
+    nameSpan.className = 'name';
+    nameSpan.textContent = d.name || '';
+    var timeSpan = document.createElement('span');
+    timeSpan.className = 'time';
+    timeSpan.textContent = date.toLocaleString();
+    header.appendChild(nameSpan);
+    header.appendChild(timeSpan);
+    var body = document.createElement('div');
+    body.className = 'comment-body';
+    body.textContent = d.msg || '';
+    item.appendChild(header);
+    item.appendChild(body);
+    list.appendChild(item);
+  });
+
+  var closeBtn = modal.querySelector('.comments-close');
+  closeBtn.addEventListener('click', function() { backdrop.remove(); });
+  backdrop.addEventListener('click', function(e) { if (e.target === backdrop) backdrop.remove(); });
+}
 
 // MỞ THIỆP + NHẠC
 function openCard() {
@@ -136,11 +248,15 @@ function scrollToOverlayTop() {
 }
 
 // bật/tắt nhạc
-// function toggleMusic() {
-//   const m = document.getElementById("music");
-//   if (m.paused) m.play();
-//   else m.pause();
-// }
+function toggleMusic() {
+  const m = document.getElementById("music");
+  if (!m) return;
+  if (m.paused) {
+    m.play().catch(() => {});
+  } else {
+    m.pause();
+  }
+}
 
 // countdown
 const target = new Date("2026-03-28T17:00:00");

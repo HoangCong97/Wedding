@@ -397,7 +397,7 @@ textarea {
 
 button {
   padding: 12px 24px;
-  background: hotpink;
+  background: linear-gradient(90deg, #ff6f9a 0%, #ffb3c9 100%);
   color: white;
   border: none;
   border-radius: 10px;
@@ -801,14 +801,9 @@ button:hover {
 .invitation-card {
   max-width: 520px;
   width: calc(100% - 40px);
-  background: linear-gradient(180deg, rgba(255,240,245,0.95), rgba(255,250,250,0.98));
-  border-radius: 18px;
   padding: 30px 26px;
-  box-shadow: 0 18px 40px rgba(196,56,124,0.12), inset 0 -6px 18px rgba(255,255,255,0.6);
-  border: 1px solid rgba(194,56,124,0.06);
   box-sizing: border-box;
   color: #5a2a42;
-  margin: 0 auto 20px;
   font-family: 'Cormorant Garamond', serif;
   text-align: center;
 }
@@ -891,6 +886,91 @@ button:hover {
 .map-btn:focus, .map-btn:hover { transform: translateY(-2px); box-shadow: 0 18px 34px rgba(196,56,124,0.18); }
 .map-btn:active { transform: translateY(0); }
 
+.map-btn:active { transform: translateY(0); }
+
+/* RSVP modal styles */
+.rsvp-btn {
+  display:inline-block;
+  margin-left:12px;
+  margin-top:14px;
+  padding:10px 14px;
+  background: linear-gradient(90deg, #ff6f9a 0%, #ffb3c9 100%);
+  color:#fff;
+  border-radius:10px;
+  border: none;
+  font-weight:700;
+  font-family: 'Montserrat', sans-serif;
+  cursor:pointer;
+  box-shadow: 0 10px 24px rgba(109,21,48,0.12);
+}
+.rsvp-btn:hover { transform: translateY(-2px); }
+
+.rsvp-backdrop {
+  position:fixed;
+  inset:0;
+  background: rgba(12,6,12,0.45);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:1500;
+}
+.rsvp-modal {
+  width: min(420px, calc(100% - 40px));
+  background: #fff;
+  border-radius: 14px;
+  padding: 18px 18px 16px;
+  box-shadow: 0 20px 50px rgba(20,10,20,0.18);
+  box-sizing: border-box;
+  text-align:left;
+}
+.rsvp-modal h3 { margin: 0 0 10px; font-family: 'Cormorant Garamond', serif; font-size: 22px; color:#6d1530; }
+.rsvp-modal label { display:block; font-size:13px; color:#5a2333; margin-top:8px; }
+.rsvp-modal input, .rsvp-modal select {
+  width:100%;
+  padding:10px 12px;
+  margin-top:6px;
+  border-radius:8px;
+  border:1px solid #eee;
+  box-sizing:border-box;
+  font-family: inherit;
+}
+.rsvp-actions { display:flex; gap:10px; justify-content:flex-end; margin-top:14px; }
+.rsvp-actions button { padding:8px 12px; border-radius:8px; border:none; cursor:pointer; }
+.rsvp-actions .cancel { background:#f3f3f3; color:#333; }
+.rsvp-actions .submit { background:#c83a78; color:#fff; font-weight:700; }
+
+/* Comments modal (full list) */
+.comments-backdrop { position:fixed; inset:0; background: rgba(12,6,12,0.45); display:none; align-items:center; justify-content:center; z-index:1600; }
+.comments-backdrop.open { display:flex; }
+.comments-modal { width: min(740px, calc(100% - 40px)); max-height: 80vh; overflow:auto; background: #fff; border-radius: 12px; padding: 18px; margin: 18px; box-shadow: 0 20px 50px rgba(0,0,0,0.18); position: relative; }
+.comments-modal h3 { margin: 0 0 10px; font-family: 'Cormorant Garamond', serif; color: #6d1530; }
+.comments-list { margin-top: 8px; text-align:left; }
+.comment-item { padding: 10px 0; border-bottom: 1px solid #f5f5f5; text-align:left; }
+.comment-item .comment-header { display:flex; justify-content:space-between; align-items:center; gap:8px; }
+.comment-item .comment-header .name { font-weight:700; color:#5a2333; }
+.comment-item .comment-header .time { font-size:12px; color:#8a8a8a; }
+.comment-item .comment-body { margin-top:6px; color:#333; white-space:pre-wrap; word-break:break-word; overflow:visible; }
+.comments-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: #fff;
+  border: 1px solid rgba(0,0,0,0.06);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  color: #6d1530;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+.comments-close:hover { transform: translateY(-2px); box-shadow: 0 12px 26px rgba(0,0,0,0.14); }
+
 </style>
 <link rel="stylesheet" href="effects.css">
 <link rel="stylesheet" href="responsive.css">
@@ -911,11 +991,12 @@ button:hover {
 </div>
 
 <!-- NHẠC -->
-<!-- <audio id="music" loop>
+<!-- NHẠC -->
+<audio id="music" loop>
   <source src="music.mp3">
 </audio>
 
-<div class="music-btn" onclick="toggleMusic()">🎵</div> -->
+<div class="music-btn" onclick="toggleMusic()" aria-label="Bật/Tắt nhạc">🎵</div>
 
 <!-- FIRST IMAGE -->
 <div class="first-image-section">
@@ -927,13 +1008,6 @@ button:hover {
     <p class="wedding-date">28.3.2026</p>
   </div>
 </div>
-<div class="hero">
-  <h1>THIỆP MỜI THAM DỰ LỄ CƯỚI</h1>
-  <p>28/03/2026</p>
-  <p>Đón khách: 16:00 | Khai tiệc: 17:00</p>
-  <h2 id="countdown"></h2>
-</div>
-
 
 <div class="gallery single-portrait">
   <div class="portrait-item groom-item">
@@ -957,7 +1031,10 @@ button:hover {
 </div>
 
 <div class="hero">
-  <h1>THÔNG TIN TIỆC CƯỚI</h1>
+  <h1>THIỆP MỜI THAM DỰ LỄ CƯỚI</h1>
+  <p>28/03/2026</p>
+  <p>Đón khách: 16:00 | Khai tiệc: 17:00</p>
+  <h2 id="countdown"></h2>
 </div>
 
 <div class="gallery single-portrait">
@@ -977,6 +1054,8 @@ button:hover {
   </div>
 </div>
 
+
+
 <div class="invitation-card-wrapper">
   <div class="invitation-card" role="region" aria-label="Thiệp mời một mặt">
     <div class="invitation-small">Được tổ chức tại</div>
@@ -989,25 +1068,63 @@ button:hover {
       <div class="date">Thứ 7 · 28/03/2026</div>
     </div>
 
-    <a class="map-btn" href="https://google.com/maps/search/?api=1&query=21.228465419066097,106.09095944563842" target="_blank" rel="noopener noreferrer" aria-label="Mở bản đồ trên Google Maps">
+    <div style="display:flex; justify-content:center; gap:8px; align-items:center; flex-wrap:wrap;">
+      <a class="map-btn" href="https://google.com/maps/search/?api=1&query=21.228465419066097,106.09095944563842" target="_blank" rel="noopener noreferrer" aria-label="Mở bản đồ trên Google Maps">
       <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
         <path d="M12 2C8.686 2 6 4.686 6 8c0 5.25 6 12 6 12s6-6.75 6-12c0-3.314-2.686-6-6-6z" stroke="#fff" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
         <circle cx="12" cy="8" r="2.2" fill="#fff" />
       </svg>
-    </a>
+      </a>
+    </div>
     <div class="invitation-small">Chỉ đường</div>
+
+      <button type="button" id="open-rsvp" class="rsvp-btn" aria-haspopup="dialog">Xác nhận tham gia</button>
+    </div>
+  </div>
+</div>
+
+<!-- RSVP modal -->
+<div id="rsvp-backdrop" class="rsvp-backdrop" style="display:none;" aria-hidden="true">
+  <div class="rsvp-modal" role="dialog" aria-modal="true" aria-labelledby="rsvp-title">
+    <h3 id="rsvp-title">Xác nhận tham gia</h3>
+    <form id="rsvp-form">
+      <label for="rsvp-name">Tên</label>
+      <input id="rsvp-name" name="name" type="text" placeholder="Tên của bạn" required>
+
+      <label for="rsvp-relation">Quan hệ</label>
+      <select id="rsvp-relation" name="relation" required>
+        <option value="" disabled selected>Chọn quan hệ</option>
+        <option value="Bạn">Bạn</option>
+        <option value="Người thân">Người thân</option>
+        <option value="Anh em họ">Anh em họ</option>
+        <option value="Đồng nghiệp">Đồng nghiệp</option>
+        <option value="Bạn học">Bạn học</option>
+        <option value="Khác">Khác</option>
+      </select>
+
+      <label for="rsvp-phone">Số điện thoại</label>
+      <input id="rsvp-phone" name="phone" type="tel" placeholder="0123 456 789" required>
+
+      <div class="rsvp-actions">
+        <button type="button" class="cancel" id="rsvp-cancel">Hủy</button>
+        <button type="submit" class="submit">Gửi</button>
+      </div>
+    </form>
   </div>
 </div>
 
 <div class="hero">
-  <h1>Lễ thành hôn</h1>
+  <div class="text-block" style="grid-column: 1 / -1; margin-top: 12px; font-size: 20px; color: #ffffff;">
+    <p>Sự hiện diện của quý khách là niềm hạnh phúc của chúng tôi!</p>
+  </div>
 </div>
 
 <div id="calendar-container"></div>
 
-
 <div class="hero">
-  <h1>Khoảnh khắc</h1>
+  <div class="text-block" style="grid-column: 1 / -1; margin-top: 12px; font-size: 20px; color: #ffffff;">
+    <p>Từng khoảnh khắc bên nhau đều là một mảnh ghép quý giá trong câu chuyện tình yêu của chúng tôi. Hãy cùng chúng tôi ngắm nhìn lại những hình ảnh đã lưu giữ trọn vẹn niềm vui, tiếng cười và cả những giây phút lặng yên đầy yêu thương.</p>
+  </div>
 </div>
 
 
@@ -1017,22 +1134,15 @@ button:hover {
     <img src="images/combo_2_couple_2.jpg">
     <img src="images/combo_2_couple_3.jpg">
     <img src="images/combo_2_couple_4.jpg">
-  </div>
-</div>
-
-<div class="hero">
-  <h1>Ảnh áo đỏ</h1>
-</div>
-
-<div class="gallery-section">
-  <div class="gallery">
     <img src="images/red_couple_1.jpg">
     <img src="images/red_couple_2.jpg">
   </div>
 </div>
 
 <div class="hero">
-  <h1>Ảnh đôi chính</h1>
+  <div class="text-block" style="grid-column: 1 / -1; margin-top: 12px; font-size: 20px; color: #ffffff;">
+    <p>Từng tấm ảnh là một lát cắt thời gian đầy cảm xúc, tất cả hòa quyện tạo nên bản giao hương ngọt ngào của tình yêui, niềm vui và những kỷ niệm mà chúng ta sẽ mãi nâng niu suốt cuộc đời</p>
+  </div>
 </div>
 
 <div class="gallery-section">
@@ -1041,27 +1151,19 @@ button:hover {
     <img src="images/couple_2.jpg">
     <img src="images/photo_1.jpg">
     <img src="images/photo_15.jpg">
-  </div>
-</div>
-
-<div class="hero">
-  <h1>Khoảnh khắc khác</h1>
-</div>
-
-<div class="gallery-section">
-  <div class="gallery">
     <img src="images/photo_5.jpg">
     <img src="images/photo_6.jpg">
     <img src="images/photo_8.jpg">
     <img src="images/photo_9.jpg">
     <img src="images/photo_11.jpg">
     <img src="images/photo_13.jpg">
-    
   </div>
 </div>
 
 <div class="hero">
-  <h1>Gửi lời chúc</h1>
+  <div class="text-block" style="grid-column: 1 / -1; margin-top: 12px; font-size: 20px; color: #ffffff;">
+    <p>Mỗi lời hồi đáp của bạn chính là một niềm vui lớn đối với chúng tôi.</p>
+  </div>
 </div>
 
 <div style="display: flex; flex-direction: column; align-items: center; padding: 20px; box-sizing: border-box; width: 100%;">
@@ -1144,6 +1246,59 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 });
+</script>
+
+<script>
+// RSVP modal behavior
+(function(){
+  var openBtn = document.getElementById('open-rsvp');
+  var backdrop = document.getElementById('rsvp-backdrop');
+  var cancel = document.getElementById('rsvp-cancel');
+  var form = document.getElementById('rsvp-form');
+
+  function open() {
+    backdrop.style.display = 'flex';
+    backdrop.setAttribute('aria-hidden','false');
+    document.getElementById('rsvp-name').focus();
+  }
+  function close() {
+    backdrop.style.display = 'none';
+    backdrop.setAttribute('aria-hidden','true');
+  }
+
+  if (openBtn) openBtn.addEventListener('click', open);
+  if (cancel) cancel.addEventListener('click', close);
+  if (backdrop) backdrop.addEventListener('click', function(e){ if(e.target === backdrop) close(); });
+
+  if (form) {
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+      var data = {
+        name: form.name.value.trim(),
+        relation: form.relation.value.trim(),
+        phone: form.phone.value.trim()
+      };
+      if (!data.name || !data.relation || !data.phone) {
+        alert('Vui lòng điền đủ thông tin.');
+        return;
+      }
+      // Save to Firestore via submitRSVP
+      if (typeof submitRSVP === 'function') {
+        submitRSVP(data).then(function(){
+          form.reset();
+          close();
+        }).catch(function(){
+          // errors handled in submitRSVP
+        });
+      } else {
+        console.log('RSVP (no submitRSVP):', data);
+        alert('Cảm ơn! Chúng tôi đã ghi nhận xác nhận của bạn.');
+        form.reset();
+        close();
+      }
+    });
+  }
+})();
 </script>
 
 </body>
