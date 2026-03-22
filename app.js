@@ -32,32 +32,53 @@ db.collection("comments")
 .orderBy("time", "desc")
 .onSnapshot(snapshot => {
   let html = "";
+  let count = 0;
   snapshot.forEach(doc => {
+    if (count >= 5) return;
     const d = doc.data();
     const date = new Date(d.time || Date.now());
-
     html += `
       <div class="comment">
         <b>${d.name}</b> <small>${date.toLocaleString()}</small><br>
         ${d.msg}
       </div>
     `;
+    count++;
   });
+  html += `<button id="showAllCommentsBtn" class="show-all-comments-btn">Hiển thị tất cả lời chúc</button>`;
   document.getElementById("comments").innerHTML = html;
+  const btn = document.getElementById("showAllCommentsBtn");
+  if (btn) {
+    btn.addEventListener("click", function() {
+      // Chuyển sang màn hình lời chúc
+      window.location.href = "comments.html";
+    });
+  }
 });
 
 // MỞ THIỆP + NHẠC
 function openCard() {
   const cover = document.getElementById("cover");
-  // Thêm class opening để trigger animation phóng to
-  cover.classList.add("opening");
-  // Chờ animation hoàn thành (800ms) rồi ẩn thiệp
+  cover.classList.add("split");
   setTimeout(() => {
-    cover.classList.add("hide");
+    cover.style.display = 'none';
     startIntroAutoScroll();
-  }, 800);
-  // Play nhạc
-  // document.getElementById("music").play();
+  }, 1000);
+}
+
+function initPortraitAnimation() {
+  const portrait = document.querySelector('.single-portrait');
+  if (!portrait) return;
+  portrait.classList.add('portrait-ready');
+  const observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        portrait.classList.add('portrait-inview');
+        observer.unobserve(portrait);
+      }
+    });
+  }, { threshold: 0.15 });
+  observer.observe(portrait);
 }
 
 let introSequenceStarted = false;
@@ -106,6 +127,8 @@ function scrollToOverlayTop() {
 
     if (progress < 1) {
       requestAnimationFrame(animateScroll);
+    } else {
+      initPortraitAnimation();
     }
   }
 
@@ -139,36 +162,6 @@ setInterval(() => {
 
   el.innerText = `⏳ ${d} ngày ${h} giờ ${m} phút ${s} giây`;
 }, 1000);
-
-// tuyết rơi mờ ảo
-setInterval(() => {
-  const f = document.createElement("div");
-  f.className = "dropDown";
-
-  const duration = 6 + Math.random() * 6.4;
-  const size = 12 + Math.random() * 18;
-  const blur = Math.random() * 1;
-  const drift = -48 + Math.random() * 96;
-  const hue = 195 + Math.random() * 20;
-  const alpha = 0.52 + Math.random() * 0.42;
-  const swayDur = 2.8 + Math.random() * 3;
-  const twinkleDur = 1.8 + Math.random() * 2;
-
-  f.style.left = `${Math.random() * 100}vw`;
-  f.style.animationDuration = `${duration}s`;
-  f.style.setProperty("--size", `${size}px`);
-  f.style.setProperty("--blur", `${blur.toFixed(2)}px`);
-  f.style.setProperty("--drift", `${drift.toFixed(1)}px`);
-  f.style.setProperty("--hue", hue.toFixed(0));
-  f.style.setProperty("--alpha", alpha.toFixed(2));
-  f.style.setProperty("--swayDur", `${swayDur.toFixed(2)}s`);
-  f.style.setProperty("--twinkleDur", `${twinkleDur.toFixed(2)}s`);
-
-  f.innerHTML = '<span class="snow-glow"></span><span class="snow-core">❄</span>';
-  document.body.appendChild(f);
-
-  setTimeout(() => f.remove(), (duration + 0.5) * 1000);
-}, 210);
 
 // LIGHTBOX
 const lightbox = document.getElementById("lightbox");

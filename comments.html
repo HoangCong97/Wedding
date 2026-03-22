@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tất cả lời chúc</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .comments-list { max-width: 600px; margin: 40px auto 20px; padding: 0 10px; }
+    .comment { background: #fff; border-radius: 8px; box-shadow: 0 2px 8px #0001; margin-bottom: 18px; padding: 16px; }
+    .comment b { color: #b96c6c; }
+    /* Xóa CSS cũ của .back-btn, thay bằng CSS mới ở cuối */
+        .back-btn {
+          position: fixed;
+          top: 18px;
+          left: 18px;
+          background: #b96c6c;
+          color: #fff;
+          border: none;
+          border-radius: 50%;
+          width: 44px;
+          height: 44px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          box-shadow: 0 2px 8px #0001;
+          cursor: pointer;
+          z-index: 100;
+          transition: background 0.2s;
+        }
+        .back-btn:hover {
+          background: #a05252;
+        }
+        .back-btn svg {
+          display: block;
+        }
+    body { background: #f7f3ef; }
+  </style>
+</head>
+<body>
+  <h2 style="text-align:center; margin-top:30px; color:#b96c6c">Tất cả lời chúc</h2>
+  <div id="commentsList" class="comments-list"></div>
+  <button class="back-btn" onclick="window.location.href='index.html'" aria-label="Quay lại" title="Quay lại">
+    <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M18 24L8 14L18 4" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </button>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyBLbZ9sruFN_bCuv-MMBTvil1x5gCuG-2w",
+      authDomain: "wedding-8f40a.firebaseapp.com",
+      projectId: "wedding-8f40a"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+    db.collection("comments").orderBy("time", "desc").onSnapshot(snapshot => {
+      let html = "";
+      snapshot.forEach(doc => {
+        const d = doc.data();
+        const date = new Date(d.time || Date.now());
+        html += `
+          <div class='comment'>
+            <b>${d.name}</b> <small>${date.toLocaleString()}</small><br>
+            ${d.msg}
+          </div>
+        `;
+      });
+      document.getElementById("commentsList").innerHTML = html || '<p style="text-align:center">Chưa có lời chúc nào.</p>';
+    });
+  </script>
+</body>
+</html>
